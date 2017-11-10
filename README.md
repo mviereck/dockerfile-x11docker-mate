@@ -6,8 +6,8 @@ Dockerfile containing Mate desktop
  - Get [x11docker from github](https://github.com/mviereck/x11docker)
 
 # Example commands: 
- - Single application: `x11docker x11docker/mate caja
- - Full desktop: `x11docker --desktop x11docker/mate
+ - Single application: `x11docker x11docker/mate caja`
+ - Full desktop: `x11docker --desktop x11docker/mate`
  
  # Screenshot
 ![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-mate.png "Mate desktop running in Xnest window using x11docker")
