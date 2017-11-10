@@ -10,6 +10,6 @@ Dockerfile containing Mate desktop
  - Full desktop: `x11docker --desktop x11docker/mate
  
  # Screenshot
-![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-lxde.png "lxde desktop running in Xephyr window using x11docker")
+![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-mate.png "mate desktop running in Xnest window using x11docker")
  
 
