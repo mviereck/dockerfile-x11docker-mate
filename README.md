@@ -8,7 +8,16 @@ Dockerfile containing Mate desktop
 # Example commands: 
  - Single application: `x11docker x11docker/mate caja`
  - Full desktop: `x11docker --desktop x11docker/mate`
- 
+  
+# Extend base image
+To add your desired applications, create your own Dockerfile `mydockerfile` with this image as a base. Example:
+```
+FROM x11docker/mate
+RUN apt-get update
+RUN apt-get install -y firefox
+```
+Build an image with `docker build -t mymate - < mydockerfile`. Run desktop with `x11docker --desktop mymate` or firefox only with `x11docker mymate firefox`.
+
  # Screenshot
 ![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-mate.png "Mate desktop running in Xnest window using x11docker")
  
