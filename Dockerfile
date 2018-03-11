@@ -7,21 +7,32 @@
 #
 # Examples: x11docker --desktop x11docker/mate
 #           x11docker x11docker/mate caja
+#
+# Options:
+# Persistent home folder stored on host with   --home
+# Shared host folder with                      --sharedir DIR
+# Hardware acceleration with option            --gpu
+# Clipboard sharing with option                --clipboard
+# Sound support with option                    --alsa or --pulseaudio
+#
+# See x11docker --help for further options.
 
 FROM debian:stretch
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update
-RUN apt-get install -y apt-utils dbus-x11
+RUN apt-get update && apt-mark hold iptables && \
+    apt-get -y dist-upgrade && apt-get autoremove -y && apt-get clean
+RUN apt-get install -y dbus-x11 procps psmisc
 
-# OpenGL support / MESA
+# OpenGL / MESA
 RUN apt-get install -y mesa-utils mesa-utils-extra libxv1
 
 # Language/locale settings
-ENV LANG=en_US.UTF-8
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
-RUN echo "LANG=en_US.UTF-8" > /etc/default/locale
-RUN apt-get install -y locales
+#   replace en_US by your desired locale setting, 
+#   for example de_DE for german.
+ENV LANG en_US.UTF-8
+RUN echo $LANG UTF-8 > /etc/locale.gen
+RUN apt-get install -y locales && update-locale --reset LANG=$LANG
 
 # some utils to have proper menus, mime file types etc.
 RUN apt-get install -y --no-install-recommends xdg-utils xdg-user-dirs \
@@ -34,14 +45,17 @@ RUN apt-get install -y --no-install-recommends mate-desktop-environment-core
 RUN apt-get install -y fortunes mate-applets mate-notification-daemon \
     mate-system-monitor mate-utils
 
-# clean up
-RUN rm -rf /var/lib/apt/lists/*
-
-# create startscript 
-RUN echo '#! /bin/bash\n\
+# startscript to copy dotfiles from /etc/skel
+# runs either CMD or image command from docker run
+RUN echo '#! /bin/sh\n\
 [ -e "$HOME/.config" ] || cp -R /etc/skel/. $HOME/ \n\
-exec mate-session \n\
+exec $* \n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
 
-CMD start
+ENTRYPOINT start
+CMD mate-session
+
+ENV DEBIAN_FRONTEND newt
+
+
