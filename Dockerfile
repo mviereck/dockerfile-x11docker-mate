@@ -53,8 +53,8 @@ exec $* \n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
 
-ENTRYPOINT start
-CMD mate-session
+ENTRYPOINT ["/usr/local/bin/start"]
+CMD ["mate-session"]
 
 ENV DEBIAN_FRONTEND newt
 
