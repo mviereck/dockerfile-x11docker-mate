@@ -1,12 +1,18 @@
-# x11docker/mate
+# x11docker/cinnamon
 # 
-# Run Mate desktop in docker. 
+# Run cinnamon desktop in docker. 
 # Use x11docker to run image. 
 # Get x11docker from github: 
 #   https://github.com/mviereck/x11docker 
 #
-# Examples: x11docker --desktop x11docker/mate
-#           x11docker x11docker/mate caja
+# Run desktop with:
+#   x11docker --desktop --dbus-system x11docker/cinnamon
+#  or with systemd:
+#   x11docker --desktop --systemd x11docker/cinnamon
+#
+# Run single application:
+#   x11docker x11docker/cinnamon nemo
+#
 #
 # Options:
 # Persistent home folder stored on host with   --home
@@ -17,7 +23,7 @@
 #
 # See x11docker --help for further options.
 
-FROM debian:stretch
+FROM debian:buster
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-mark hold iptables && \
@@ -38,24 +44,30 @@ RUN apt-get install -y locales && update-locale --reset LANG=$LANG
 RUN apt-get install -y --no-install-recommends xdg-utils xdg-user-dirs \
     menu menu-xdg mime-support desktop-file-utils
 
-# Mate desktop core
-RUN apt-get install -y --no-install-recommends mate-desktop-environment-core
+# cinnamon
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+            cinnamon cinnamon-l10n
 
-# additional goodies
-RUN apt-get install -y fortunes mate-applets mate-notification-daemon \
-    mate-system-monitor mate-utils
+# utils
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+            dconf-cli gedit gnome-system-monitor gnome-terminal \
+            pulseaudio sudo synaptic
+
 
 # startscript to copy dotfiles from /etc/skel
 # runs either CMD or image command from docker run
 RUN echo '#! /bin/sh\n\
+[ -e \$HOME/.cinnamon ] || {\n\
+  dconf write /org/cinnamon/desktop/background/picture-uri \"'file:///usr/share/backgrounds/gnome/Sandstone.jpg'\"\n\
+}\n\
 [ -e "$HOME/.config" ] || cp -R /etc/skel/. $HOME/ \n\
 exec $* \n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
 
 ENTRYPOINT ["/usr/local/bin/start"]
-CMD ["mate-session"]
+CMD ["cinnamon-session"]
 
 ENV DEBIAN_FRONTEND newt
-
-
