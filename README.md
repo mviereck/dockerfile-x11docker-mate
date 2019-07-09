@@ -1,6 +1,6 @@
 # x11docker/mate
 
-Base image Mate desktop (on debian stretch)
+Base image Mate desktop on Debian
  - Run Mate desktop in docker.
  - Use x11docker to run GUI applications and desktop environments in docker images. 
  - Get [x11docker from github](https://github.com/mviereck/x11docker)
@@ -25,7 +25,7 @@ To add your desired applications, create your own Dockerfile with this image as 
 ```
 FROM x11docker/mate
 RUN apt-get update
-RUN apt-get install -y midori
+RUN apt-get install -y firefox-esr
 ```
 
  # Screenshot
