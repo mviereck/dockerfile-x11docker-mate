@@ -28,13 +28,13 @@ RUN apt-get update && \
       dbus-x11 \
       procps \
       psmisc && \
-    env DEBIAN_FRONTEND=noninteractive apt-get install -y  \
+    env DEBIAN_FRONTEND=noninteractive apt-get install -y \
       xdg-utils \
       xdg-user-dirs \
       menu-xdg \
       mime-support \
       desktop-file-utils && \
-    env DEBIAN_FRONTEND=noninteractive apt-get install -y 
+    env DEBIAN_FRONTEND=noninteractive apt-get install -y \
       mesa-utils \
       mesa-utils-extra \
       libxv1
