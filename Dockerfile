@@ -1,6 +1,6 @@
 # x11docker/mate
 # 
-# Run Mate desktop in docker. 
+# Run Mate desktop in docker container. 
 # Use x11docker to run image. 
 # Get x11docker from github: 
 #   https://github.com/mviereck/x11docker 
@@ -21,7 +21,7 @@
 #
 # See x11docker --help for further options.
 
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt-get update && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y \
